@@ -12,6 +12,10 @@ clock = pygame.time.Clock()
 bg_surface = pygame.image.load('assets/background-day.png').convert()           #adding background image #convert into the type that pygame feels easier, hepls ith consistency
 base_surface = pygame.image.load('assets/base.png').convert()
 base_x_pos = 0
+
+bird_surface = pygame.image.load('assets/bluebird-midflap.png').convert()
+bird_rect = bird_surface.get_rect(center = (50,200))
+
 #scale image to screen dimension
 #bg_surface = pygame.transform.scale2x(bg_surface)
 
@@ -20,7 +24,9 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()             #quit method
-    screen.blit(bg_surface,(0,0))    #to display the image in the display screen
+    screen.blit(bg_surface,(0,0))
+    screen.blit(bird_surface,bird_rect)
+    # screen.blit(bg_surface,(0,0))    #to display the image in the display screen
     base_x_pos -=1
     draw_base()
     if base_x_pos <= -288 :
