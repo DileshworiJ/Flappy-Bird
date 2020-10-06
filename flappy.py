@@ -6,8 +6,10 @@ def draw_base():
 
 def create_pipe():
     random_pipe_pos = random.choice(pipe_height)
-    new_pipe =pipe_surface.get_rect(midtop= (350,random_pipe_pos))
-    return new_pipe
+    bottom_pipe =pipe_surface.get_rect(midtop= (350,random_pipe_pos))
+    top_pipe =pipe_surface.get_rect(midbottom= (350,random_pipe_pos -150))
+    return top_pipe, bottom_pipe
+     
 
 def move_pipes(pipes):
     for pipe in pipes:
@@ -16,7 +18,18 @@ def move_pipes(pipes):
 
 def draw_pipes(pipes):
     for pipe in pipes:
-        screen.blit(pipe_surface,pipe)
+        if pipe.bottom >=512:   
+            screen.blit(pipe_surface,pipe)
+        else:
+            flip_pipe = pygame.transform.flip(pipe_surface, False, True)
+            screen.blit(flip_pipe,pipe)
+ 
+def check_collision(pipes):
+    for pipe in pipes:
+        if bird_rect.colliderect(pipe):
+            print('collison detected')
+    if bird_rect.top <= -50 or bird_rect.bottom >= 450:
+        print('collison detected')
 
 pygame.init()  #to initialize pygame library
 
@@ -51,13 +64,14 @@ while True:
                 bird_movement = 0
                 bird_movement -= 6
         if event.type == SPAWNPIPE:         #checking for a condition when == is used
-            pipe_list.append(create_pipe())
+            pipe_list.extend(create_pipe())         #cannot append the tuple but should extend that list
             
     screen.blit(bg_surface,(0,0))
     
     bird_movement +=gravity
     bird_rect.centery += int(bird_movement)
     screen.blit(bird_surface,bird_rect)
+    check_collision(pipe_list)
 
     pipe_list = move_pipes(pipe_list)
     draw_pipes(pipe_list)
