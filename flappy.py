@@ -1,11 +1,12 @@
-import pygame, sys
+import pygame, sys, random
 
 def draw_base():
     screen.blit(base_surface, (base_x_pos,450))
     screen.blit(base_surface, (base_x_pos +288,450))
 
 def create_pipe():
-    new_pipe =pipe_surface.get_rect(midtop= (350,256))
+    random_pipe_pos = random.choice(pipe_height)
+    new_pipe =pipe_surface.get_rect(midtop= (350,random_pipe_pos))
     return new_pipe
 
 def move_pipes(pipes):
@@ -36,6 +37,7 @@ pipe_surface = pygame.image.load('assets/pipe-green.png').convert()
 pipe_list = []
 SPAWNPIPE = pygame.USEREVENT                #TRIGGERED BY A TIMER USEREVENT
 pygame.time.set_timer(SPAWNPIPE,1200)           #time in millisecond, 1.2sec
+pipe_height = [200,300,400]
 #scale image to screen dimension
 #bg_surface = pygame.transform.scale2x(bg_surface)
 
