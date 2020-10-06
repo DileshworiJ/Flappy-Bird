@@ -50,8 +50,7 @@ while True:
                 bird_movement -= 6
         if event.type == SPAWNPIPE:         #checking for a condition when == is used
             pipe_list.append(create_pipe())
-            print(pipe_list)
-
+            
     screen.blit(bg_surface,(0,0))
     
     bird_movement +=gravity
