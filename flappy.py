@@ -27,11 +27,14 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()             #quit method
-            
+        if event.type == pygame.KEYDOWN:           #event codes are in uppercase
+            if event.key ==pygame.K_SPACE:
+                bird_movement = 0
+                bird_movement -= 6
     screen.blit(bg_surface,(0,0))
     
     bird_movement +=gravity
-    bird_rect.centery += bird_movement
+    bird_rect.centery += int(bird_movement)
     screen.blit(bird_surface,bird_rect)
     # screen.blit(bg_surface,(0,0))    #to display the image in the display screen
     base_x_pos -=1
