@@ -27,9 +27,10 @@ def draw_pipes(pipes):
 def check_collision(pipes):
     for pipe in pipes:
         if bird_rect.colliderect(pipe):
-            print('collison detected')
+            return False
     if bird_rect.top <= -50 or bird_rect.bottom >= 450:
-        print('collison detected')
+            return False
+    return True
 
 pygame.init()  #to initialize pygame library
 
@@ -38,6 +39,7 @@ clock = pygame.time.Clock()
 
 gravity = 0.25
 bird_movement = 0
+game_active = True
 
 bg_surface = pygame.image.load('assets/background-day.png').convert()           #adding background image #convert into the type that pygame feels easier, hepls ith consistency
 base_surface = pygame.image.load('assets/base.png').convert()
@@ -60,21 +62,28 @@ while True:
             pygame.quit()
             sys.exit()             #quit method
         if event.type == pygame.KEYDOWN:           #event codes are in uppercase
-            if event.key ==pygame.K_SPACE:
+            if event.key ==pygame.K_SPACE and game_active:
                 bird_movement = 0
                 bird_movement -= 6
+            if event.key ==pygame.K_SPACE and game_active == False:
+                game_active = True
+                pipe_list.clear()
+                bird_rect.center = (50, 256)
+                bird_movement = 0
+
         if event.type == SPAWNPIPE:         #checking for a condition when == is used
             pipe_list.extend(create_pipe())         #cannot append the tuple but should extend that list
             
     screen.blit(bg_surface,(0,0))
-    
-    bird_movement +=gravity
-    bird_rect.centery += int(bird_movement)
-    screen.blit(bird_surface,bird_rect)
-    check_collision(pipe_list)
 
-    pipe_list = move_pipes(pipe_list)
-    draw_pipes(pipe_list)
+    if game_active:
+        bird_movement += gravity
+        bird_rect.centery += int(bird_movement)
+        screen.blit(bird_surface,bird_rect)
+        game_active = check_collision(pipe_list)
+
+        pipe_list = move_pipes(pipe_list)
+        draw_pipes(pipe_list)
 
     # screen.blit(bg_surface,(0,0))    #to display the image in the display screen
     base_x_pos -=1
